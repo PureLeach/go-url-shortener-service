@@ -1,0 +1,31 @@
+# Ignore binary files and executables
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Ignore object files and compilation artifacts
+*.o
+*.a
+*.obj
+
+# Ignore IDE and editor configuration files
+.idea/
+.vscode/
+
+# Ignore build files
+build/
+bin/
+
+# Ignore environment configuration files
+.env
+
+# Ignore generated documentation files
+docs/
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore cached files
+*.cache

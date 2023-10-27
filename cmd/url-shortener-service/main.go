@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+	"url-shortener-service/cmd/internal/config"
+)
+
 func main() {
-	println("Hello, World!")
+	cfg := config.ConfigLoad()
+	fmt.Printf("cfg %#v\n", cfg)
 }
