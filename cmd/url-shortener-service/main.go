@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"url-shortener-service/cmd/internal/config"
+	mwLogger "url-shortener-service/cmd/internal/http-server/middleware/logger"
 	"url-shortener-service/cmd/internal/storage/sqlite"
 
 	"github.com/go-chi/chi/v5"
@@ -33,6 +34,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.Logger)
+	router.Use(mwLogger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
 }
