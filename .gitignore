@@ -29,3 +29,7 @@ docs/
 
 # Ignore cached files
 *.cache
+
+
+# Ignore db files
+*.db
