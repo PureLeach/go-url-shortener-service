@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-	"url-shortener-service/cmd/internal/config"
-	mwLogger "url-shortener-service/cmd/internal/http-server/middleware/logger"
-	"url-shortener-service/cmd/internal/storage/sqlite"
+
+	"url-shortener-service/internal/config"
+	mwLogger "url-shortener-service/internal/http-server/middleware/logger"
+	"url-shortener-service/internal/storage/sqlite"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
