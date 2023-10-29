@@ -56,6 +56,8 @@ func TestSaveHandler(t *testing.T) {
 		},
 	}
 
+	log := fLogger.SetupLogger("local")
+
 	for _, tc := range cases {
 		tc := tc
 
@@ -70,7 +72,6 @@ func TestSaveHandler(t *testing.T) {
 					Once()
 			}
 
-			log := fLogger.SetupLogger("local")
 			handler := save.New(log, urlSaverMock)
 
 			input := fmt.Sprintf(`{"url": "%s", "alias": "%s"}`, tc.url, tc.alias)
