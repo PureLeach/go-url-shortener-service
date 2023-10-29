@@ -21,13 +21,13 @@ cp example.env .env
 3. Build the project:
 
 ```
-go build cmd/url-shortener-service/main.go
+make build
 ```
 
 4. Run the project:
 
 ```
-./main
+./url-shortener-service
 ```
 
 The server will start running on `http://localhost:8080`

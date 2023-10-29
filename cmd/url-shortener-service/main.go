@@ -24,7 +24,7 @@ func main() {
 	log.Info(
 		"starting url-shortener",
 		slog.String("env", cfg.Env),
-		slog.String("version", "123"),
+		slog.String("version", "1.0.0"),
 	)
 	log.Debug("debug messages are enabled")
 
