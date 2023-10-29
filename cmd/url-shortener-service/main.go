@@ -1,12 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log/slog"
+	"net/http"
 	"os"
 
 	"url-shortener-service/internal/config"
+	"url-shortener-service/internal/http-server/handlers/url/save"
 	mwLogger "url-shortener-service/internal/http-server/middleware/logger"
+	fLogger "url-shortener-service/internal/lib/logger"
 	"url-shortener-service/internal/storage/sqlite"
 
 	"github.com/go-chi/chi/v5"
@@ -16,7 +18,7 @@ import (
 func main() {
 	cfg := config.ConfigLoad()
 
-	log := setupLogger(cfg.Env)
+	log := fLogger.SetupLogger(cfg.Env)
 
 	log.Info(
 		"starting url-shortener",
@@ -30,7 +32,6 @@ func main() {
 		log.Error("failed to init storage", err)
 		os.Exit(1)
 	}
-	fmt.Printf("storage %#v\n", storage)
 
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
@@ -38,29 +39,22 @@ func main() {
 	router.Use(mwLogger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
-}
 
-func setupLogger(env string) *slog.Logger {
-	var log *slog.Logger
+	router.Post("/url", save.New(log, storage))
 
-	switch env {
-	case "local":
-		log = slog.New(
-			slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
-		)
-	case "dev":
-		log = slog.New(
-			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
-		)
-	case "prod":
-		log = slog.New(
-			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
-		)
-	default: // If env config is invalid, set prod settings by default due to security
-		log = slog.New(
-			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
-		)
+	log.Info("starting server", slog.String("address", cfg.Address))
+	srv := &http.Server{
+		Addr:         cfg.Address,
+		Handler:      router,
+		ReadTimeout:  cfg.Timeout,
+		WriteTimeout: cfg.Timeout,
+		IdleTimeout:  cfg.IdleTimeout,
 	}
 
-	return log
+	if err := srv.ListenAndServe(); err != nil {
+		log.Error("failed to start server")
+	}
+
+	log.Info("stopping server")
+
 }
