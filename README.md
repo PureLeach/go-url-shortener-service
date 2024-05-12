@@ -9,7 +9,7 @@ To get started with the project, follow these steps:
 1. Clone the repository:
 
 ```
-git clone https://github.com/HoneyLeach/go-url-shortener-service.git
+git clone https://github.com/PureLeach/go-url-shortener-service.git
 ```
 
 2. Copy the settings file and change them:
